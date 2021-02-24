@@ -1,6 +1,7 @@
 import React from 'react'
 
 import Navbar from './components/navbar/navbar'
+import SearchBar from './components/searchbar/searchbar'
 
 import './App.css';
 
@@ -8,6 +9,11 @@ const App = () => {
   return (
     <div>
       <Navbar />
+
+      <SearchBar />
+
+
+      
       <div className="container mt-3">
         <h2 class="text-center">Register</h2>
         <div>

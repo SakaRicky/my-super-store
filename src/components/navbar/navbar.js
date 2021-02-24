@@ -1,12 +1,12 @@
 import React from "react";
 
-import { FaCartArrowDown } from 'react-icons/fa';
+import { FaCartArrowDown, FaBars } from 'react-icons/fa';
 import './navbar.css'
 
 const navbar = () => {
     return (<nav className="navbar navbar-expand-md navbar-light bg-primary">
-                <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-                    <span className="navbar-toggler-icon text-white"></span>
+                <button className="navbar-toggler text-white" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+                    <FaBars className="navbar-toggler-icon" style={{color:"white"}} />
                 </button>
                 <a className="navbar-brand display-1 text-white font-weight-bolder" href="#">Super Store</a>
 
