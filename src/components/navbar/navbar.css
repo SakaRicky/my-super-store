@@ -4,3 +4,8 @@
 .navbar-brand {
     font-size: 30px !important;
 }
+
+.active{
+    color: black !important;
+    background-color:white;
+  }
