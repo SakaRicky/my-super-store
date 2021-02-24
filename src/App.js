@@ -1,19 +1,31 @@
 import React from 'react'
+import {BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 import Navbar from './components/navbar/navbar'
 import SearchBar from './components/searchbar/searchbar'
 
 import './App.css';
 
+import Home from './components/pages/home'
+import Deals from './components/pages/deals'
+import Cart from './components/pages/cart'
+
 const App = () => {
   return (
     <div>
-      <Navbar />
-
-      <SearchBar />
-
+      
+      <Router>
+        <Navbar />
+        <SearchBar />
+        <Switch>
+          <Route path='/' exact component={Home} />
+          <Route path='/deals' component={Deals} />
+          <Route path='/cart' component={Cart} />
+        </Switch>
+      </Router>
 
       
+
       <div className="container mt-3">
         <h2 class="text-center">Register</h2>
         <div>
