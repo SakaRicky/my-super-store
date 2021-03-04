@@ -1,0 +1,12 @@
+.my-row {
+    border: 3px solid red;
+}
+
+.my-col {
+    border: 3px dashed blue;
+}
+
+.card img {
+    height: 150px;
+    width: 150px;
+}
