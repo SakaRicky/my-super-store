@@ -1,14 +1,15 @@
 import React from 'react'
 import {BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
-import Navbar from './components/navbar/navbar'
+import Navbar from './components/navbar/Navbar'
 import SearchBar from './components/searchbar/searchbar'
 
 import './App.css';
 
 import Home from './components/pages/home/Home'
-import Deals from './components/pages/deals'
-import Cart from './components/pages/cart'
+import Deals from './components/pages/Deals'
+import Cart from './components/pages/Cart'
+import Item from './components/pages/item_page/Item'
 
 const App = () => {
   return (
@@ -26,6 +27,9 @@ const App = () => {
           </Route>
           <Route path='/cart'>
             <Cart />
+          </Route>
+          <Route path='/:id'>
+            <Item />
           </Route>
         </Switch>
       </Router>

@@ -3,3 +3,8 @@
     box-sizing: border-box;
     align-items: center;
 }
+
+.noDeals {
+    color: red;
+    margin: auto;
+}

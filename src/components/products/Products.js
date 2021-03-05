@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react'
 
 import ProductCard from './ProductCard/ProductCard'
 import itemsServices from '../../services/items'
+import './products.css'
 
-const ProductCards = ({deals}) => {
+const Products = ({deals}) => {
     const [items, setItems] = useState([])
 
     useEffect(() => {
@@ -15,25 +16,31 @@ const ProductCards = ({deals}) => {
     }, [])
 
     if (deals) {
+
+        const computed_deals_items = items.map(item => {
+                                        if(item.isOnSale){
+                                            return (
+                                                <div className="col-md-4 col-sm-6 my-3" key={item._id}>
+                                                    <ProductCard
+                                                            name={item.name}
+                                                            imgUrl={item.imageUrl} 
+                                                            description={item.description} 
+                                                            price={item.price}
+                                                            average_rating={item.avgRating}
+                                                            isOnSale={item.isOnSale}
+                                                        />
+                                                </div>
+                                            )
+                                        }
+                                    })
+        const returned_deals_items = computed_deals_items.length === 0 ? 
+                                        <div className="noDeals"><h2>No Deals at the moment</h2></div>
+                                        :
+                                        computed_deals_items
         return (
             <div className="container my-5">
                 <div className="row">
-                    {items.map(item => {
-                        if(item.isOnSale){
-                            return (
-                                <div className="col-md-4 col-sm-6 my-3" key={item._id}>
-                                    <ProductCard
-                                            name={item.name}
-                                            imgUrl={item.imageUrl} 
-                                            description={item.description} 
-                                            price={item.price}
-                                            average_rating={item.avgRating}
-                                            isOnSale={item.isOnSale}
-                                        />
-                                </div>
-                            )
-                        }
-                    })}
+                    {returned_deals_items}
                 </div>
             </div>
         )
@@ -63,4 +70,4 @@ const ProductCards = ({deals}) => {
     )
 }
 
-export default ProductCards
+export default Products
