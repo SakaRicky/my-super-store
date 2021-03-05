@@ -1,9 +1,11 @@
 import React from 'react'
 
-const deals = () => {
+import Products from '../products/Products'
+
+const Deals = () => {
     return <div className="row">
-    <h1 className="mx-auto">Deals</h1>
+        <Products deals />
 </div>
 }
 
-export default deals
+export default Deals

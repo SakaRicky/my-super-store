@@ -1,11 +1,11 @@
 import React from 'react'
 
-import ProductCards from '../../product_cards/ProductCards'
+import Products from '../../products/Products'
 import './home.css'
 
 const home = () => {
     return (
-        <ProductCards />
+        <Products />
     )
 }
 
