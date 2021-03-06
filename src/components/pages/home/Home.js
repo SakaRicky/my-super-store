@@ -1,11 +1,15 @@
 import React from 'react'
 
 import Products from '../../products/Products'
+import SearchBar from '../../searchbar/Searchbar'
 import './home.css'
 
 const home = () => {
     return (
-        <Products />
+        <div>
+            <SearchBar />
+            <Products />
+        </div>
     )
 }
 

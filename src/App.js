@@ -2,7 +2,6 @@ import React from 'react'
 import {BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 import Navbar from './components/navbar/Navbar'
-import SearchBar from './components/searchbar/searchbar'
 
 import './App.css';
 
@@ -17,7 +16,6 @@ const App = () => {
       
       <Router>
         <Navbar />
-        <SearchBar />
         <Switch>
           <Route exact path='/'>
             <Home />
@@ -28,7 +26,7 @@ const App = () => {
           <Route path='/cart'>
             <Cart />
           </Route>
-          <Route path='/:id'>
+          <Route path='/item/:id'>
             <Item />
           </Route>
         </Switch>
