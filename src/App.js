@@ -2,7 +2,7 @@ import React from 'react'
 import {BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 import Navbar from './components/navbar/Navbar'
-import SearchBar from './components/searchbar/searchbar'
+import SearchBar from './components/searchbar/Searchbar'
 
 import './App.css';
 
