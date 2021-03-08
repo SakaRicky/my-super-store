@@ -17,8 +17,9 @@ const Products = ({deals}) => {
 
     if (deals) {
 
-        const computed_deals_items = items.map(item => {
-                                        if(item.isOnSale){
+        const computed_deals_items = items.filter(item => item.isOnSale)
+                                          .map(item => {
+                                              console.log('item: ', item);
                                             return (
                                                 <div className="col-md-4 col-sm-6 my-3" key={item._id}>
                                                     <ProductCard
@@ -28,11 +29,11 @@ const Products = ({deals}) => {
                                                             price={item.price}
                                                             average_rating={item.avgRating}
                                                             isOnSale={item.isOnSale}
+                                                            item_id={item._id}
                                                         />
                                                 </div>
                                             )
-                                        }
-                                    })
+                                          })
         const returned_deals_items = computed_deals_items.length === 0 ? 
                                         <div className="noDeals"><h2>No Deals at the moment</h2></div>
                                         :
@@ -61,6 +62,7 @@ const Products = ({deals}) => {
                                     price={item.price}
                                     average_rating={item.avgRating}
                                     isOnSale={item.isOnSale}
+                                    item_id={item._id}
                                 />
                         </div>
                     )

@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types';
+import { Link } from "react-router-dom";
 
 import FullStar from '../../stars/FullStart'
 import HalfStar from '../../stars/HalfStar'
@@ -8,7 +9,7 @@ import EmptyStar from '../../stars/EmptyStar'
 import './ProductCard.css'
 
 
-const ProductCard = ({imgUrl, price, name, average_rating, isOnSale}) => {
+const ProductCard = ({imgUrl, price, name, average_rating, isOnSale, item_id}) => {
 
     const stars = []
 
@@ -30,19 +31,19 @@ const ProductCard = ({imgUrl, price, name, average_rating, isOnSale}) => {
         <div className="card">
             <img className="card-img-top img center" src={imgUrl} alt={name} />
             <div className="card-body">
-                <p className="mb-0">{name}</p>
+                <p className="mb-0"><Link to={`item/${item_id}`}>{name}</Link></p>
                 <div>{stars}</div>
                 <div>
                     <p className="card-text">
                         <strong>
                             ${price}
-                            { isOnSale && <div className="onSale ml-2">On Sale</div>}
+                            { isOnSale && <span className="onSale ml-2">On Sale</span>}
                         </strong>
                     </p>
                 </div>
             </div>
             <div className='row mb-3'>
-            <a href="#" className="btn btn-primary center">View Item</a></div>
+            <Link to={`item/${item_id}`} className="btn btn-primary center">View Item</Link></div>
         </div>
     )
 }
