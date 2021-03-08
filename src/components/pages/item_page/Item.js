@@ -72,7 +72,7 @@ const Item = () => {
     }
 
     return <div className='row item'>
-                <div className="col-sm">
+                <div className="col-sm image_wrapper">
                     <img className="float-sm-right mt-4" src={item.imageUrl} alt={item.name}/>
                 </div>
                 <div className="col-sm description">
