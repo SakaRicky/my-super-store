@@ -7,7 +7,7 @@ import SearchBar from './components/searchbar/Searchbar'
 import './App.css';
 
 import Home from './components/pages/home/Home'
-import Deals from './components/pages/Deals'
+import Deals from './components/pages/deals/Deals'
 import Cart from './components/pages/Cart'
 import Item from './components/pages/item_page/Item'
 
