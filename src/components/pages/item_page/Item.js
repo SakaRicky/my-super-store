@@ -10,7 +10,6 @@ import './item.css'
 const Item = () => {
     const [item, setItem] = useState('')
     const [item_number, setItemNumber] = useState(1)
-    const [display_error, setDisplayError] = useState(false)
     const [error_displayed, setErrorMessage] = useState('')
 
     let params = useParams()
@@ -29,26 +28,23 @@ const Item = () => {
 
     const increase_quantity = () => {
         if (item_number === item.stockCount) {
-            console.log('item equals stock cannot increase');
             setErrorMessage('Insufficient stock!')
-            setDisplayError(true)
         } else {
+            if (item_number <= item.stockCount && item_number > 0) {
+                setErrorMessage('')
+            }
             setItemNumber(item_number+1)
-        }
-        if (item_number > 0 ) {
-            setDisplayError(false)
         }
     }
 
     const decrease_quantity = () => {
         if (item_number <= 1) {
             setErrorMessage('Invalid number of items')
-            setDisplayError(true)
         } else {
+            if (item_number <= item.stockCount && item_number > 0) {
+                setErrorMessage('')
+            }
             setItemNumber(item_number-1)
-        }
-        if (item_number === item.stockCount) {
-            setDisplayError(false)
         }
     }
 
@@ -68,7 +64,7 @@ const Item = () => {
                         <button className="ml-3 bg-primary" onClick={increase_quantity}>+</button>
                     </div>
                     <div className="my-3"><button>Add to Cart</button></div>
-                    {display_error && error_message}
+                    {error_displayed && error_message}
                     {available_in_cart}
                 </div>
             </div>
