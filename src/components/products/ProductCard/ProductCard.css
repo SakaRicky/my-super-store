@@ -18,3 +18,12 @@
     color: white;
     display: inline-block;
 }
+
+.card-body a {
+    text-decoration: none;
+    color: black;
+}
+
+.card-body a:hover {
+    color: rgb(0, 0, 255);
+}
