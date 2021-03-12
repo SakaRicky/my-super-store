@@ -58,7 +58,8 @@ const Item = () => {
                     <hr className="line"></hr>
                     <p>{item.description}</p>
                     <p className="my-2"><strong>${item.price}</strong></p>
-                    <div>Quantity: <span className="quantity">{item_number}</span></div>
+                    <div className="my-2">Available in stock: <span className="bg-success px-3 py-1 text-white">{item.stockCount}</span></div>
+                    <div>Quantity: <span className="quantity text-white">{item_number}</span></div>
                     <div className="my-2">
                         <button className="ml-4 bg-primary" onClick={decrease_quantity}>-</button>
                         <button className="ml-3 bg-primary" onClick={increase_quantity}>+</button>
