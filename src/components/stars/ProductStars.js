@@ -1,8 +1,8 @@
 import React from 'react'
 
-import FullStar from './FullStart'
-import HalfStar from './HalfStar'
-import EmptyStar from './EmptyStar'
+import FullStar from './stars/FullStart'
+import HalfStar from './stars/HalfStar'
+import EmptyStar from './stars/EmptyStar'
 
 const ProductStars = ({average_rating}) => {
     const stars = []

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
 import Products from '../../products/Products'
+import SearchBar from '../../searchbar/Searchbar'
 import itemsServices from '../../../services/items'
 
 import './home.css'
@@ -17,7 +18,11 @@ const Home = () => {
     }, [])
 
     return (
-        <Products items={items}/>
+        <div>
+            <SearchBar />
+            <Products items={items}/>
+        </div>
+        
     )
 }
 

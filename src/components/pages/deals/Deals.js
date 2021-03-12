@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 import itemsServices from '../../../services/items'
 import ProductsOnDeals from '../../products/Products'
+import SearchBar from '../../searchbar/Searchbar'
 
 import './deals.css'
 
@@ -21,9 +22,14 @@ const Deals = () => {
 
     const deals_to_display = isLoading === false && deals.length === 0 ? <div className="noDeals"><h1>No Deals available at the moment</h1></div> : <ProductsOnDeals items={deals}/>
 
-    return <div className="row">
-                {deals_to_display}
+    return (
+            <div>
+                    <SearchBar />
+                <div className="row">
+                    {deals_to_display}
+                </div>
             </div>
+    )
 }
 
 export default Deals
