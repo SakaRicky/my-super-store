@@ -32,7 +32,7 @@ const Home = () => {
     // eslint-disable-next-line
     useEffect(() => {
         fetch_data()        
-    }, [])
+    }, [page])
 
     // called when a user does a search with the searchBar component
     const handleSearch = async (searchItem) => {
