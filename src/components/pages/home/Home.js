@@ -2,89 +2,77 @@ import React, { useState, useEffect } from 'react'
 
 import Products from '../../products/Products'
 import SearchBar from '../../searchbar/Searchbar'
-import itemsServices from '../../../services/items'
-import PaginationButton from '../../PaginationButtons/PaginationButton'
+import fetchItemList from '../../../services/items'
+
 
 import './home.css'
-
-const PAGE_SIZE = 6;
+import Pagination from '../../pagination/Pagination'
+import constants from '../../../utils/constants'
 
 const Home = () => {
     const [items, setItems] = useState([])
     const [noItems, setNoItems] = useState(false)
-    const [number_of_pages, setNumberOfPages] = useState(null)
+    const [totalItems, setTotalItems] = useState(null)
     const [page, setPage] = useState(1)
-    const [search, setSearch] = useState(false)
-
-    // fetches for all the data in the backend
-    const fetch_data = async () => {
-        // Calculate the "from" of the query params 
-        const request_from = (page - 1) * PAGE_SIZE
-        // Get all the ietems of the backend to calculate number of pages
-        const response_data = await itemsServices.getAllItems()
-        // Set number of pages in pagination
-        setNumberOfPages(Math.ceil(response_data.items.length/PAGE_SIZE))
-
-        const data_items = await itemsServices.getPageItems(request_from)
-        setItems(data_items.items)
-    }
+    const [search, setSearch] = useState('')
 
     // eslint-disable-next-line
     useEffect(() => {
-        fetch_data()        
-    }, [page])
+        // fetches for all the data in the backend
+        const fetch_data = async () => {
+            // Calculate the "from" of the query params 
+            const request_from = (page - 1) * constants.PAGE_SIZE
+            const params = {
+                from: request_from
+            }
+            // Get the items of the backend for the current page
+            const data_items = await fetchItemList(params)        
+            // Set number of pages in pagination
+            setTotalItems(data_items.total)
+            setItems(data_items.items)
+        }
 
-    // called when a user does a search with the searchBar component
-    const handleSearch = async (searchItem) => {
-        if (searchItem === '') {
-            setPage(1)
-            setNoItems(false)
-            setSearch(false)
-            fetch_data()
-        } else {
+        const fecth_searched_item = async () => {
             // construct a query from the search item
-            const query = `q=${searchItem}`
-            const response = await itemsServices.getSearchedItem(query)
-            //Sibce the backend responds with only 1 item, make an array from that
+            const params = {
+                q: search
+            }
+            const response = await fetchItemList(params)
+            //Slice the backend responds with only 1 item, make an array from that
+            console.log('response: ', response);
             const item = [response.items[0]]
-            setSearch(true)
             if (response.items[0] === undefined) {
                 setNoItems(true)
             } else {
                 setItems(item);
             }
         }
-        
+
+        if (search) {
+            fecth_searched_item()
+        } else {
+            fetch_data()
+        }        
+    }, [page, search])
+
+    // called when a user does a search with the searchBar component
+    const handleSearch = async (searchItem) => {
+        if (searchItem === '') {
+            setSearch('')
+        } else {
+            setSearch(searchItem)
+        }  
     }
 
-    const handleNextPage = () => {
-        setPage(page+1)
-    }
-
-    const handlePreviousPage = () => {
-        setPage(page - 1)
-    }
-
-    const handleFirstPage = () => {
-        setPage(1)
-    }
-
-    const handleLastPage = () => {
-        setPage(number_of_pages)
+    const updatePage = (page) => {
+        setPage(page)
     }
 
     return (
         <div>
             <SearchBar handleSearch={handleSearch}/>
             {noItems ? <h3 className="no-item">No items matched your search</h3> : <Products items={items}/>}
-            {!search &&  <PaginationButton 
-                                currentPage={page} 
-                                allPages={number_of_pages}
-                                nextPage={handleNextPage}
-                                prevPage={handlePreviousPage}
-                                firstPage={handleFirstPage}
-                                lastPage={handleLastPage}
-            />}
+            <Pagination updatePage={updatePage} page={page} totalItems={totalItems} />
         </div>
         
     )

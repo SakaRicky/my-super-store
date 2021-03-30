@@ -1,46 +1,47 @@
 import React, { useState, useEffect } from 'react'
 
-import itemsServices from '../../../services/items'
+import fetchItemList from '../../../services/items'
 import ProductsOnDeals from '../../products/Products'
 import SearchBar from '../../searchbar/Searchbar'
-import PaginationButton from '../../PaginationButtons/PaginationButton'
 
 import './deals.css'
-
-const PAGE_SIZE = 6
+import Pagination from '../../pagination/Pagination'
+import constants from '../../../utils/constants'
 
 const Deals = () => {
     const [deals, setDeals] = useState([])
     const [isLoading, setIsLoading] = useState(true)
     const [noDeals, setNoDeals] = useState(false)
-    const [number_of_pages, setNumberOfPages] = useState(null)
+    const [totalItems, setTotalItems] = useState(null)
     const [page, setPage] = useState(1)
+    const [search, setSearch] = useState('')
 
     useEffect(() => {
         const fetch_deals = async () => {
-            // Get all deals to calculate the number of pages for pagination
-            const all_deals = await itemsServices.getDeals('isOnSale=true')
-            // set number of pages
-            setNumberOfPages(Math.ceil(all_deals.items.length/PAGE_SIZE))
+            // Calculate the "from" of the query params 
+            const request_from = (page - 1) * constants.PAGE_SIZE
             // Query made to look for deals and from a certain number
-            const query = `isOnSale=true&from=${(page - 1) * PAGE_SIZE}&size=${PAGE_SIZE}`
-            const response_data = await itemsServices.getDeals(query)
-            setDeals(response_data.items)
+            const params = {
+                isOnSale: true,
+                from: request_from
+            }
+            const response_deals = await fetchItemList(params)
+            // Set the received deals
+            setDeals(response_deals.items)
+            // set number of pages
+            setTotalItems(response_deals.total)
+            
             setIsLoading(false)
         }
-        fetch_deals()
-    }, [page])
 
-    // called when a user does a search with the searchBar component
-    const handleSearch = async (searchItem) => {
-        if (searchItem === '') {
-            setPage(1)
-            setNoDeals(false)
-        } else {
+        const fecth_searched_item = async () => {
             // construct a query from the search item
-            const query = `q=${searchItem}`
-            const response = await itemsServices.getSearchedItem(query)
-            //Sibce the backend responds with only 1 item, make an array from that
+            const params = {
+                q: search
+            }
+            const response = await fetchItemList(params)
+            //Slice the backend responds with only 1 item, make an array from that
+            console.log('response: ', response);
             const item = [response.items[0]]
             if (response.items[0] === undefined) {
                 setNoDeals(true)
@@ -48,27 +49,25 @@ const Deals = () => {
                 setDeals(item);
             }
         }
-        
+
+        if (search) {
+            fecth_searched_item()
+        } else {
+            fetch_deals()
+        } 
+    }, [page, search])
+
+    // called when a user does a search with the searchBar component
+    const handleSearch = async (searchItem) => {
+        if (searchItem === '') {
+            setSearch('')
+        } else {
+            setSearch(searchItem)
+        } 
     }
 
-    // Increment the page state when next button is clicked
-    const handleNextPage = () => {
-        setPage(page+1)
-    }
-
-    // Decrement the page state when previous button is clicked
-    const handlePreviousPage = () => {
-        setPage(page - 1)
-    }
-
-    // initiate page state to 1
-    const handleFirstPage = () => {
-        setPage(1)
-    }
-
-    // Set page state to last page
-    const handleLastPage = () => {
-        setPage(number_of_pages)
+    const updatePage = (page) => {
+        setPage(page)
     }
 
     // If it's no more loading but the deals state still has length 0, there are no deals in the backend
@@ -80,14 +79,7 @@ const Deals = () => {
                 <div className="row">
                     {noDeals ? <h3 className="no-item">No Deals matched your search</h3> : deals_to_display}
                 </div>
-                {noDeals ? null : <PaginationButton 
-                                currentPage={page} 
-                                allPages={number_of_pages}
-                                nextPage={handleNextPage}
-                                prevPage={handlePreviousPage}
-                                firstPage={handleFirstPage}
-                                lastPage={handleLastPage}
-            />}
+                <Pagination updatePage={updatePage} page={page} totalItems={totalItems} />
             </div>
     )
 }
