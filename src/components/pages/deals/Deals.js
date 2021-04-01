@@ -11,7 +11,6 @@ import constants from '../../../utils/constants'
 const Deals = () => {
     const [deals, setDeals] = useState([])
     const [isLoading, setIsLoading] = useState(true)
-    const [noDeals, setNoDeals] = useState(false)
     const [totalItems, setTotalItems] = useState(null)
     const [page, setPage] = useState(1)
     const [search, setSearch] = useState('')
@@ -23,7 +22,8 @@ const Deals = () => {
             // Query made to look for deals and from a certain number
             const params = {
                 isOnSale: true,
-                from: request_from
+                from: request_from,
+                q:search
             }
             const response_deals = await fetchItemList(params)
             // Set the received deals
@@ -34,27 +34,7 @@ const Deals = () => {
             setIsLoading(false)
         }
 
-        const fecth_searched_item = async () => {
-            // construct a query from the search item
-            const params = {
-                q: search
-            }
-            const response = await fetchItemList(params)
-            //Slice the backend responds with only 1 item, make an array from that
-            console.log('response: ', response);
-            const item = [response.items[0]]
-            if (response.items[0] === undefined) {
-                setNoDeals(true)
-            } else {
-                setDeals(item);
-            }
-        }
-
-        if (search) {
-            fecth_searched_item()
-        } else {
-            fetch_deals()
-        } 
+        fetch_deals()
     }, [page, search])
 
     // called when a user does a search with the searchBar component
@@ -77,7 +57,7 @@ const Deals = () => {
             <div>
                 <SearchBar handleSearch={handleSearch}/>
                 <div className="row">
-                    {noDeals ? <h3 className="no-item">No Deals matched your search</h3> : deals_to_display}
+                    {deals.length === 0 && !isLoading ? <h3 className="no-item">No Deals matched your search</h3> : deals_to_display}
                 </div>
                 <Pagination updatePage={updatePage} page={page} totalItems={totalItems} />
             </div>
