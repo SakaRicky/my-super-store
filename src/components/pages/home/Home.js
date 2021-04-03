@@ -41,7 +41,9 @@ const Home = () => {
     const handleSearch = async (searchItem) => {
         if (searchItem === '') {
             setSearch('')
+            setPage(1)
         } else {
+            setPage(1)
             setSearch(searchItem)
         }  
     }

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { useParams } from 'react-router-dom'
 
-import ItemServices from '../../../services/items'
+import { getItem } from '../../../services/items'
 import ProductStars from '../../stars/ProductStars'
 import ErrorNotification from '../../notifications/error_notification/ErrorNotification'
 import './item.css'
@@ -16,7 +16,7 @@ const Item = () => {
 
     useEffect(() => {
         const fetch_item = async () => {
-            const fetched_item = await ItemServices.getItem(params.id)
+            const fetched_item = await getItem(params.id)
             setItem(fetched_item)
         }
         fetch_item()
