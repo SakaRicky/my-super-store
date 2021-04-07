@@ -1,22 +1,27 @@
 import axios from 'axios'
+import constants from '../utils/constants'
 
-const baseUrl = 'https://gp-super-store-api.herokuapp.com/'
-
-const getAllItems = async () => {
-    const response = await axios.get(`${baseUrl}item/list`)
+export const getItem = async (id) => {
+    const response = await axios.get(`https://gp-super-store-api.herokuapp.com/item/${id}`)
     return response.data
 }
 
-const getItem = async (id) => {
-    const response = await axios.get(`${baseUrl}item/${id}`)
-    return response.data
-}
+ function fetchItemList({ from, size, sortField, sortDir, isOnSale, q } = {}) {
 
-const getDeals = async (query) => {
-    const response = await axios.get(`${baseUrl}item/list/?${query}`)
-    return response.data
-}
+  console.log('params: ', from, size, sortField, sortDir, isOnSale, q);
 
-const services = { getAllItems, getDeals, getItem }
+  return axios
+      .get('https://gp-super-store-api.herokuapp.com/item/list', {
+        params: {
+          from,
+          size: constants.PAGE_SIZE,
+          sortField,
+          sortDir,
+          isOnSale,
+          q,
+        },
+      })
+      .then((response) => response.data);
+  }
 
-export default services
+export default fetchItemList
