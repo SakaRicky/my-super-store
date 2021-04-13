@@ -6,7 +6,7 @@ import './products.css'
 const Products = ({items}) => {
 
     return (
-        <div className="container my-5">
+        <div className="container mt-5">
             <div className="row">
                 {items.map(item => {
                     return (

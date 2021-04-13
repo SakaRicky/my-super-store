@@ -1,18 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { CartContext } from '../../../context/CartContext' 
 
 import { useParams } from 'react-router-dom'
 
 import { getItem } from '../../../services/items'
 import ProductStars from '../../stars/ProductStars'
-import ErrorNotification from '../../notifications/error_notification/ErrorNotification'
+import Notification from '../../notifications/Notification'
 import './item.css'
 
 const Item = () => {
-    const [item, setItem] = useState('')
+    const [cartItems, setCartItems] = useContext(CartContext)
+    const [item, setItem] = useState({})
     const [item_number, setItemNumber] = useState(1)
     const [error_displayed, setErrorMessage] = useState('')
+    const [addedToCartMessage, setAddedToCartMessage] = useState(false)
 
     let params = useParams()
+
+    const itemInCart = cartItems.find(cartItem => {
+        return cartItem._id === item._id
+    })
 
     useEffect(() => {
         const fetch_item = async () => {
@@ -22,9 +29,11 @@ const Item = () => {
         fetch_item()
     }, [params.id])
 
-
-    let error_message = <ErrorNotification message={error_displayed} />
-    const available_in_cart = <div className="available_in_cart">1 of this item is currently in your cart</div>
+    useEffect(() => {
+        if (item.stockCount < 1) {
+            setErrorMessage('Item no longer in stock')
+        }
+    }, [item.stockCount]) 
 
     const increase_quantity = () => {
         if (item_number === item.stockCount) {
@@ -48,27 +57,70 @@ const Item = () => {
         }
     }
 
-    return <div className='row item'>
+    console.log('cartItems', cartItems);
+
+    const addToCart = () => {
+        // If item in cart, find it and update its quantity
+        const itemInCart = cartItems.find(i => i._id === item._id)
+        if (itemInCart) {
+            const updatedItemInCart = {
+                ...itemInCart,
+                quantity: itemInCart.quantity + 1,
+                total_price: item.total_price + item.price 
+            }
+            const filteredCartItems = cartItems.filter(i => i._id !== itemInCart._id)
+            setCartItems([...filteredCartItems, updatedItemInCart])
+        } else {
+            const itemToAddToCart = {
+                ...item,
+                quantity: item_number,
+                total_price: item_number*item.price
+            }
+            setCartItems([...cartItems, itemToAddToCart])
+        }
+
+        setAddedToCartMessage(true)
+        setItem({...item, stockCount: item.stockCount-item_number})
+        setTimeout(() => {
+            setAddedToCartMessage(false)
+        }, 5000);
+    }
+
+    const stockStyle = item.stockCount < 1 ? "bg-danger " : "bg-success "
+
+    return (
+        <div className='col'>
+            <div className='row text-center'>
+                {addedToCartMessage && 
+                    <div className="col-md-6 offset-md-3 alert alert-success" role="alert">
+                        <Notification message={`Added ${item_number} ${item.name} to Cart`} />
+                    </div>
+                }
+            </div>
+            <div className='row item'>
                 <div className="col-sm image_wrapper">
                     <img className="float-sm-right mt-4" src={item.imageUrl} alt={item.name}/>
                 </div>
                 <div className="col-sm description">
                     <p><strong>{item.name}</strong></p>
-                    <ProductStars average_rating={item.avgRating} />
+                    <div><ProductStars average_rating={item.avgRating} /></div>
                     <hr className="line"></hr>
                     <p>{item.description}</p>
-                    <p className="my-2"><strong>${item.price}</strong></p>
-                    <div className="my-2">Available in stock: <span className="bg-success px-3 py-1 text-white">{item.stockCount}</span></div>
+                    <p className="my-3"><strong>${item.price}</strong></p>
+                    <div className="my-3">Available in stock: <span className={stockStyle + "px-3 py-1 text-white"}>{item.stockCount}</span></div>
                     <div>Quantity: <span className="quantity text-white">{item_number}</span></div>
-                    <div className="my-2">
+                    <div className="my-3">
                         <button className="ml-4 bg-primary" onClick={decrease_quantity}>-</button>
                         <button className="ml-3 bg-primary" onClick={increase_quantity}>+</button>
                     </div>
-                    <div className="my-3"><button>Add to Cart</button></div>
-                    {error_displayed && error_message}
-                    {available_in_cart}
+                    <div className="my-3"><button onClick={addToCart}>Add to Cart</button></div>
+                    {error_displayed && <div className="alert alert-danger" role="alert"><Notification message={error_displayed} /></div>}
+                    {itemInCart && <div className="available_in_cart">1 of this item is currently in your cart</div>}
                 </div>
             </div>
+        </div>
+    )
+    
 }
 
 export default Item

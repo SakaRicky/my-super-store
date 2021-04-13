@@ -20,18 +20,24 @@ const Searchbar = ({handleSearch}) => {
         }
     }
 
-    return <div className="row bg-secondary">
-                <form className="form-inline mx-auto h-25" onSubmit={search}>
-                    <div className="col-xs">
+    return <div className="row search">
+                <div className="col-sm-3 offset-sm-4 mt-3 mb-2">
+                    <div className="input-group md-form form-sm form-2 pl-0">
                         <input 
-                            className="form-control" 
+                            className="form-control my-0 py-1 amber-border" 
                             type="search" 
                             placeholder="Search" 
                             aria-label="Search"
                             onChange={changeHandler} />
-                        <button className="btn search" type="submit"><BsSearch /></button>
+                        <div className="input-group-append">
+                            <span 
+                                className="input-group-text amber lighten-3  bg-warning" 
+                                id="basic-text1">
+                                <i className="fas fa-search text-grey" aria-hidden="true" onClick={search}><BsSearch /></i>
+                            </span>
+                        </div>
                     </div>
-                </form>
+                </div>
             </div>
 }
 
