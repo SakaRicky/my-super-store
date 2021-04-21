@@ -57,8 +57,6 @@ const Item = () => {
         }
     }
 
-    console.log('cartItems', cartItems);
-
     const addToCart = () => {
         // If item in cart, find it and update its quantity
         const itemInCart = cartItems.find(i => i._id === item._id)
@@ -70,7 +68,7 @@ const Item = () => {
             }
             const filteredCartItems = cartItems.filter(i => i._id !== itemInCart._id)
             setCartItems([...filteredCartItems, updatedItemInCart])
-        } else {
+        } else {  // else add it to cart
             const itemToAddToCart = {
                 ...item,
                 quantity: item_number,
@@ -87,6 +85,10 @@ const Item = () => {
     }
 
     const stockStyle = item.stockCount < 1 ? "bg-danger " : "bg-success "
+
+    // disable the button if stockCount is 0
+    const disable = item.stockCount === 0 ? true : false
+    const disableClass = item.stockCount === 0 ? 'disable-btn' : 'enable-btn'
 
     return (
         <div className='col'>
@@ -113,7 +115,7 @@ const Item = () => {
                         <button className="ml-4 bg-primary" onClick={decrease_quantity}>-</button>
                         <button className="ml-3 bg-primary" onClick={increase_quantity}>+</button>
                     </div>
-                    <div className="my-3"><button onClick={addToCart}>Add to Cart</button></div>
+                    <div className="my-3"><button className={disableClass} onClick={addToCart} disabled={disable}>Add to Cart</button></div>
                     {error_displayed && <div className="alert alert-danger" role="alert"><Notification message={error_displayed} /></div>}
                     {itemInCart && <div className="available_in_cart">1 of this item is currently in your cart</div>}
                 </div>

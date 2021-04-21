@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
+import { useHistory } from "react-router-dom";
 import {CartContext} from '../../../context/CartContext'
 import CartItem from './cartItem/CartItem'
 import Notification from '../../notifications/Notification'
@@ -24,39 +25,65 @@ const Cart = () => {
         }, 5000)
     }
 
-    console.log('cartItems', cartItems);
+    const history = useHistory()
 
     const updateIncreaseCartItem = (item) => {
         // find item in cart
-        console.log('Increase', item);
         const itemInCartToUpdate = cartItems.find(i => i._id === item._id)
-        console.log('itemInCartToUpdate', itemInCartToUpdate);
+        // find it's index, this is to put that item back at that index
+        const indexOfItemInCartToUpdate = cartItems.findIndex(i => i._id === item._id);
+        // update the item's quantity and total price
         const updatedItemInCart = {
             ...itemInCartToUpdate,
             quantity: itemInCartToUpdate.quantity + 1,
             total_price: itemInCartToUpdate.total_price + itemInCartToUpdate.price 
         }
-        console.log('updatedItemInCart', updatedItemInCart);
-        const filteredCartItems = cartItems.filter(i => i._id !== itemInCartToUpdate._id)
-        console.log('new items', [...filteredCartItems, updatedItemInCart]);
-        setCartItems([...filteredCartItems, updatedItemInCart])
+        // create a new array of cart items by maintaining all the other items and replacing
+        // the item updated to it's exact index
+        const newCartItems = cartItems.map((item, i) =>  {
+            if (i === indexOfItemInCartToUpdate) {
+                return updatedItemInCart
+            }
+            return item
+        })
+        setCartItems(newCartItems)
     }
 
     const updateDecreaseCartItem = (item) => {
         // find item in cart
-        console.log('Decrease', item);
         const itemInCartToUpdate = cartItems.find(i => i._id === item._id)
+        // find it's index, this is to put that item back at that index
+        const indexOfItemInCartToUpdate = cartItems.findIndex(i => i._id === item._id);
+        // update the item's quantity and total price
         const updatedItemInCart = {
             ...itemInCartToUpdate,
             quantity: itemInCartToUpdate.quantity - 1,
             total_price: itemInCartToUpdate.total_price - itemInCartToUpdate.price 
         }
-        const filteredCartItems = cartItems.filter(i => i._id !== itemInCartToUpdate._id)
-        setCartItems([...filteredCartItems, updatedItemInCart])
+
+        // create a new array of cart items by maintaining all the other items and replacing
+        // the item updated to it's exact index
+        const newCartItems = cartItems.map((item, i) =>  {
+            if (i === indexOfItemInCartToUpdate) {
+                return updatedItemInCart
+            }
+            return item
+        })
+        setCartItems(newCartItems)
     }
 
-    const total_prices_array = cartItems.map(cart_item => cart_item.total_price)
+    const remove =(id) => {
+        const newCartItems = cartItems.filter(item => item._id !== id)
+        setCartItems(newCartItems)
+    }
 
+    const checkout = () => {
+        setCartItems([])
+        history.push('/thankyou')
+    }
+
+    // Extract all total prices and compute the total price for all items in the cart
+    const total_prices_array = cartItems.map(cart_item => cart_item.total_price)
     const all_total_prices = total_prices_array.length !== 0 ? total_prices_array.reduce((acc, current_val) => acc + current_val) : null
 
     return (<div className="row">
@@ -82,7 +109,8 @@ const Cart = () => {
                                                         item={item}
                                                         notify={notify}
                                                         increaseItem={updateIncreaseCartItem}
-                                                        decreaseItem={updateDecreaseCartItem}>{item.name}
+                                                        decreaseItem={updateDecreaseCartItem}
+                                                        remove={remove}>{item.name}
                                                     </CartItem>
                                         })}
                                     </ul>
@@ -91,7 +119,7 @@ const Cart = () => {
                             <div className="row">
                                 <div className="col-xs-8 offset-xs-2 col-sm-10 offset-sm-1 col-md-8 offset-md-2">
                                     <div className="row py-5">
-                                        <div className="col"><button>Checkout</button></div>
+                                        <div className="col"><button className="btn btn-lg checkout-btn" onClick={checkout}><strong>Checkout</strong></button></div>
                                         <div className="col d-flex justify-content-end "><h4><strong>Total: ${all_total_prices}</strong></h4></div>
                                     </div>
                                 </div>

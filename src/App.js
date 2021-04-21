@@ -9,6 +9,7 @@ import Home from './components/pages/home/Home'
 import Deals from './components/pages/deals/Deals'
 import Cart from './components/pages/cart/Cart'
 import Item from './components/pages/item_page/Item'
+import Thankyou from './components/pages/thankyou/Thankyou'
 import { CartProvider } from './context/CartContext'
 
 const App = () => {
@@ -29,6 +30,9 @@ const App = () => {
             </Route>
             <Route path='/item/:id'>
               <Item />
+            </Route>
+            <Route path='/thankyou'>
+              <Thankyou />
             </Route>
           </Switch>
         </Router>

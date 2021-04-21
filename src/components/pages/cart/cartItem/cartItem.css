@@ -11,7 +11,7 @@
     cursor: pointer;
 }
 
-.description button {
+.control_btn {
     color: white;
     background-color: rgb(247, 168, 21);
     border: rgb(247, 168, 21);

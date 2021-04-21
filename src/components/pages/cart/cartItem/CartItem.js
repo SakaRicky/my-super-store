@@ -1,35 +1,34 @@
-import React, { useState } from 'react'
+import { remove } from 'lodash'
+import React from 'react'
 import './cartItem.css'
 
-const CartItem = (props) => {
-    const [item, setItem] = useState(props.item)
-    const [editedQuantity, setEditedQuantity] = useState(props.item.quantity)
+const CartItem = ({item, notify, increaseItem, decreaseItem, remove}) => {
 
     const increase_quantity = () => {
         if (item.quantity === item.stockCount) {
-            props.notify({
+            notify({
                 message: 'Insufficient stock!',
                 class: 'alert alert-danger'
             })
         } else {
             if (item.quantity <= item.stockCount && item.quantity > 0) {
-                props.notify('')
+                notify('')
             }
-            props.increaseItem(item)
+            increaseItem(item)
         }
     }
 
     const decrease_quantity = () => {
         if (item.quantity <= 1) {
-            props.notify({
+            notify({
                 message: 'Invalid number of items',
                 class: 'alert alert-danger'
             })
         } else {
             if (item.quantity <= item.stockCount && item.quantity > 0) {
-                props.notify('')
+                notify('')
             }
-            props.decreaseItem(item)
+            decreaseItem(item)
         }
     }
 
@@ -46,15 +45,15 @@ const CartItem = (props) => {
                     <div className="row px-2">Available in stock: <span className={stockStyle + "px-3 text-white"}>{item.stockCount}</span></div>
                     <div className="row p-2">
                         <div className="col">Quantity: <span className="quantity text-white py-1">{item.quantity}</span></div>
-                        <div className="col"><span className="text-primary button">Remove</span></div>
+                        <div className="col"><span className="text-primary button" onClick={() => remove(item._id)}>Remove</span></div>
                     </div>
                     <div className="row py-2">
-                        <button className="ml-4 bg-primary rounded text-white" onClick={decrease_quantity}>-</button>
-                        <button className="ml-3 bg-primary rounded text-white" onClick={increase_quantity}>+</button>
+                        <button className="ml-4 bg-primary control_btn" onClick={decrease_quantity}>-</button>
+                        <button className="ml-3 bg-primary control_btn" onClick={increase_quantity}>+</button>
                     </div>
                 </div>
                 <div className="col-xs-4 col-sm-4 col-md-4 col-lg-5 px-sm-3">
-                    <div className="d-flex justify-content-end"><h4><strong>${item.total_price}</strong></h4></div>
+                    <div className="d-flex justify-content-end"><h4><strong>${item.total_price.toFixed(2)}</strong></h4></div>
                 </div>
             </div>
         </li>
