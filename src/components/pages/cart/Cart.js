@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useHistory } from "react-router-dom";
-import {CartContext} from '../../../context/CartContext'
+import {useCartState, cartTypes} from '../../../state/cart'
 import CartItem from './cartItem/CartItem'
 import Notification from '../../notifications/Notification'
 import './cart.css'
 
 const Cart = () => {
-    const [cartItems, setCartItems] = useContext(CartContext)
+    const {cartItems, cartDispatch} = useCartState()
     const [notification, setNotification] = useState({})
 
     useEffect(() => {
@@ -28,57 +28,24 @@ const Cart = () => {
     const history = useHistory()
 
     const updateIncreaseCartItem = (item) => {
-        // find item in cart
-        const itemInCartToUpdate = cartItems.find(i => i._id === item._id)
-        // find it's index, this is to put that item back at that index
-        const indexOfItemInCartToUpdate = cartItems.findIndex(i => i._id === item._id);
-        // update the item's quantity and total price
-        const updatedItemInCart = {
-            ...itemInCartToUpdate,
-            quantity: itemInCartToUpdate.quantity + 1,
-            total_price: itemInCartToUpdate.total_price + itemInCartToUpdate.price 
-        }
-        // create a new array of cart items by maintaining all the other items and replacing
-        // the item updated to it's exact index
-        const newCartItems = cartItems.map((item, i) =>  {
-            if (i === indexOfItemInCartToUpdate) {
-                return updatedItemInCart
-            }
-            return item
-        })
-        setCartItems(newCartItems)
+        // Dispatch here to increase item in cart
+        cartDispatch({type: cartTypes.INCREASECARTITEM, data: item})
     }
 
     const updateDecreaseCartItem = (item) => {
-        // find item in cart
-        const itemInCartToUpdate = cartItems.find(i => i._id === item._id)
-        // find it's index, this is to put that item back at that index
-        const indexOfItemInCartToUpdate = cartItems.findIndex(i => i._id === item._id);
-        // update the item's quantity and total price
-        const updatedItemInCart = {
-            ...itemInCartToUpdate,
-            quantity: itemInCartToUpdate.quantity - 1,
-            total_price: itemInCartToUpdate.total_price - itemInCartToUpdate.price 
-        }
+        //
+        cartDispatch({type: cartTypes.DECREASECARTITEM, data: item})
 
-        // create a new array of cart items by maintaining all the other items and replacing
-        // the item updated to it's exact index
-        const newCartItems = cartItems.map((item, i) =>  {
-            if (i === indexOfItemInCartToUpdate) {
-                return updatedItemInCart
-            }
-            return item
-        })
-        setCartItems(newCartItems)
     }
 
     const remove =(id) => {
-        const newCartItems = cartItems.filter(item => item._id !== id)
-        setCartItems(newCartItems)
+        //Dispatch here
+        cartDispatch({type: cartTypes.REMOVEFROMCART, data: id})
+
     }
 
     const checkout = () => {
-        setCartItems([])
+        cartDispatch({type: cartTypes.INITSTATE})
         history.push('/thankyou')
     }
 

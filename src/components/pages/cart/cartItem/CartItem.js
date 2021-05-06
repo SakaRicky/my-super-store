@@ -1,4 +1,3 @@
-import { remove } from 'lodash'
 import React from 'react'
 import './cartItem.css'
 

@@ -10,7 +10,7 @@ import Deals from './components/pages/deals/Deals'
 import Cart from './components/pages/cart/Cart'
 import Item from './components/pages/item_page/Item'
 import Thankyou from './components/pages/thankyou/Thankyou'
-import { CartProvider } from './context/CartContext'
+import { CartProvider } from './state/cart'
 
 const App = () => {
   return (

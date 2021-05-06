@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
-import { CartContext } from '../../../context/CartContext' 
-
+import React, { useState, useEffect } from "react";
+import { useCartState, cartTypes } from '../../../state/cart' 
 import { useParams } from 'react-router-dom'
 
 import { getItem } from '../../../services/items'
@@ -9,7 +8,7 @@ import Notification from '../../notifications/Notification'
 import './item.css'
 
 const Item = () => {
-    const [cartItems, setCartItems] = useContext(CartContext)
+    const {cartItems, cartDispatch} = useCartState()
     const [item, setItem] = useState({})
     const [item_number, setItemNumber] = useState(1)
     const [error_displayed, setErrorMessage] = useState('')
@@ -56,27 +55,9 @@ const Item = () => {
             setItemNumber(item_number-1)
         }
     }
-
     const addToCart = () => {
-        // If item in cart, find it and update its quantity
-        const itemInCart = cartItems.find(i => i._id === item._id)
-        if (itemInCart) {
-            const updatedItemInCart = {
-                ...itemInCart,
-                quantity: itemInCart.quantity + 1,
-                total_price: item.total_price + item.price 
-            }
-            const filteredCartItems = cartItems.filter(i => i._id !== itemInCart._id)
-            setCartItems([...filteredCartItems, updatedItemInCart])
-        } else {  // else add it to cart
-            const itemToAddToCart = {
-                ...item,
-                quantity: item_number,
-                total_price: item_number*item.price
-            }
-            setCartItems([...cartItems, itemToAddToCart])
-        }
-
+        // Dispatch here
+        cartDispatch({type: cartTypes.ADDTOCART, data: {...item, item_number}})
         setAddedToCartMessage(true)
         setItem({...item, stockCount: item.stockCount-item_number})
         setTimeout(() => {
