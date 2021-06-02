@@ -1,0 +1,19 @@
+.icon-block {
+    position: relative;
+    display: inline-flex;
+}
+
+.icon-tag {
+    color: white;
+    background-color: red;
+    border-radius: 50%;
+    position: absolute;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    z-index: 1;
+    width: 17px !important;
+    height: 17px !important;
+    text-align: center;
+    justify-content: 50%;
+}

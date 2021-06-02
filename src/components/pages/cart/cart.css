@@ -1,0 +1,10 @@
+.cart-list {
+    list-style: none;
+}
+
+.checkout-btn {
+    color: white;
+    background-color: orange;
+    border: none;
+    border-radius: 2px;
+}

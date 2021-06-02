@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-
 import Products from '../../products/Products'
 import SearchBar from '../../searchbar/Searchbar'
 import fetchItemList from '../../../services/items'
@@ -15,6 +14,7 @@ const Home = () => {
     const [totalItems, setTotalItems] = useState(null)
     const [page, setPage] = useState(1)
     const [search, setSearch] = useState('')
+
 
     // eslint-disable-next-line
     useEffect(() => {
@@ -53,7 +53,7 @@ const Home = () => {
     }
 
     return (
-        <div>
+        <div className="container-fluid">
             <SearchBar handleSearch={handleSearch}/>
             {items.length === 0 && !isLoading ? <h3 className="no-item">No items matched your search</h3> : <Products items={items}/>}
             <Pagination updatePage={updatePage} page={page} totalItems={totalItems} />

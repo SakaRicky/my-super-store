@@ -6,14 +6,12 @@ import './paginationButton.css'
 const NavButtons = ({currentPage, allPages, nextPage, prevPage, firstPage, lastPage}) => {
 
     return (
-        <div className="nav-button">
-            <div>
-                <button className="mx-3"  onClick={() => firstPage()} disabled={currentPage===1}>First</button>
-                <button onClick={() => prevPage()} disabled={currentPage===1}> &lt; </button>
-                <span className="mx-3">{allPages ? currentPage:null} - {allPages ? allPages:null}</span>
-                <button onClick={() => nextPage()} disabled={currentPage===allPages}> &gt; </button>
-                <button className="mx-3"  onClick={() => lastPage()} disabled={currentPage===allPages}>Last</button>
-            </div>
+        <div className="pagination-button text-center mb-4 mt-4">
+            <button className="mx-3"  onClick={() => firstPage()} disabled={currentPage===1}>First</button>
+            <button onClick={() => prevPage()} disabled={currentPage===1}> &lt; </button>
+            <span className="mx-3">{allPages ? currentPage:null} - {allPages ? allPages:null}</span>
+            <button onClick={() => nextPage()} disabled={currentPage===allPages}> &gt; </button>
+            <button className="mx-3"  onClick={() => lastPage()} disabled={currentPage===allPages}>Last</button>
         </div>
     )
 }

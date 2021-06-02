@@ -1,0 +1,28 @@
+.thankyou-message {
+    width: 800px;
+    border: 1px solid black;
+    text-align: center;
+    margin: auto;
+    margin-top: 100px;
+}
+
+.center {
+    display: block;
+    margin: 20px auto;
+    /* margin: 20px 0px; */
+}
+
+.message {
+    width: 500px;
+}
+
+.return-home {
+    background-color: rgb(202, 199, 199);
+    width: 150px;
+    padding: 15px;
+}
+
+.return-home a {
+    color: inherit;
+    text-decoration: none;
+}

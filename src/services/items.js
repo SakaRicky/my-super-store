@@ -8,7 +8,7 @@ export const getItem = async (id) => {
 
  function fetchItemList({ from, size, sortField, sortDir, isOnSale, q } = {}) {
 
-  console.log('params: ', from, size, sortField, sortDir, isOnSale, q);
+  // console.log('params: ', from, size, sortField, sortDir, isOnSale, q);
 
   return axios
       .get('https://gp-super-store-api.herokuapp.com/item/list', {
